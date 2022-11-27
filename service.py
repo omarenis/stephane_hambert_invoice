@@ -1,3 +1,4 @@
+import os
 from enum import Enum
 
 from pandas import read_csv as read_csv
@@ -62,7 +63,7 @@ class ShippingMethodAttributes(Enum):
     customer_name = 'Shipping Name'
 
 
-DATA = read_csv('orders-1.csv', delimiter=',')
+DATA = read_csv(f'{os.path.abspath(os.path.join(os.getcwd(), os.pardir))}/pythonProject1/orders-1.csv', delimiter=',')
 
 
 def get_data():
@@ -106,3 +107,4 @@ def get_formatted_orders(list_orders):
                                                                                      quantity=i['command_lines'][0][
                                                                                          'quantity']))
     return formatted
+print(get_formatted_orders(get_data()))
