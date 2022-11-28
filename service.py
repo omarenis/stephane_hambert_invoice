@@ -92,7 +92,6 @@ def get_data():
 def get_formatted_orders(list_orders):
     formatted = {}
     for i in list_orders:
-        print(i)
         if formatted.get(i[OrderAttributes.order_id.name]) is None:
             billing = BillingOrDelivery(**i['billing'])
             delivery = BillingOrDelivery(**i['delivery'])
@@ -106,5 +105,6 @@ def get_formatted_orders(list_orders):
                                                                                          'price'],
                                                                                      quantity=i['command_lines'][0][
                                                                                          'quantity']))
+    print(formatted)
     return formatted
-print(get_formatted_orders(get_data()))
+
