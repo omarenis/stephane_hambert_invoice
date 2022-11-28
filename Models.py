@@ -35,6 +35,12 @@ class Order(object):
         self.delivery = delivery
         self.command_lines = [] if command_lines is None else command_lines
 
+    def calculate_subtotal(self):
+        subtotal = 0
+        for i in self.command_lines:
+            subtotal += i.price * i.quantity
+        return subtotal
+
 
 class CommandLine(object):
 

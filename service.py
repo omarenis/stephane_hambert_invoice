@@ -106,5 +106,5 @@ def get_formatted_orders(list_orders):
                                                                                          'price'],
                                                                                      quantity=i['command_lines'][0][
                                                                                          'quantity']))
+        formatted[i[OrderAttributes.order_id.name]].calculate_subtotal()
     return formatted
-

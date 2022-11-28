@@ -27,7 +27,6 @@ def generate_pdf():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename)
     upload_file.save(file_path)
     orders = get_formatted_orders(get_data(read_file(file_path)))
-    print(orders)
     for i in orders:
         html = render_template(
             "invoice.html",
@@ -36,27 +35,6 @@ def generate_pdf():
         with open(f'files/invoice{orders[i].order_id}.pdf', 'wb') as f:
             f.write(pdf)
     return render_template('success.html')
-
-
-# @app.route('/get_invoice', methods=['GET'])
-# def get_invoices():
-#     order = list(data.values())[0]
-#     return render_template('invoice.html', order=order)
-
-
-# @app.route('/orders/<order_id>/generatePdf', methods=['POST'])
-# def get_invoice(order_id):
-#     order = data[order_id]
-#
-#     html = render_template(
-#         "invoice.html",
-#         order=order)
-#     pdf = from_string(html, False)
-#     response = make_response(pdf)
-#     response.headers["Content-Type"] = "application/pdf"
-#     response.headers["Content-Disposition"] = "inline; filename=output.pdf"
-#     return response
-
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':

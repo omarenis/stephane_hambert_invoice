@@ -194,7 +194,7 @@
                 {{ order.billing.country }}
             </address>
             <address class="p-2 border-1 text-right mt-2" style="border: 1px solid black;">
-                <h4>Bill/NOTIFY ADRESS</h4>
+                <h4>DELIVERY ADRESS</h4>
                 {{ order.delivery.customer_name }}<br>
                 {{ order.delivery.address1 }}<br>
                 {{ order.delivery.address2 }}<br>
@@ -206,28 +206,26 @@
     <div class="container px-0">
         <div class="row mt-4">
             <div class="col-12 col-lg-12">
-                <hr class="row brc-default-l1 mx-n1 mb-4"/>
                 <div class="mt-4">
                     <div class="row text-600 text-white bgc-default-tp1 py-25">
-                        <div class="d-none d-sm-block col-2 text-left">BRAND</div>
-                        <div class="d-none d-sm-block col-2 text-left">HS CODE</div>
-                        <div class="d-none d-sm-block col-2 text-left">PRODUCT CODE/SKU</div>
+                        <div class="col-2 text-left">BRAND</div>
+                        <div class="col-2 text-left">HS CODE</div>
+                        <div class="col-2 text-left">PRODUCT CODE/SKU</div>
                         <div class="col-3 text-left">Description</div>
-                        <div class="d-none d-sm-block text-center">Price</div>
-                        <div class="d-none d-sm-block col-1 text-center">Qty</div>
+                        <div class="text-center">Price</div>
+                        <div class="col-1 text-center">Qty</div>
                         <div class="col-1 text-right">TOTAL</div>
                     </div>
                     <div class="text-95 text-secondary-d3">
                         {% for command_line in order.command_lines %}
                             <div class="row mb-2 mb-sm-0 py-25">
-                                <div class="d-none d-sm-block col-2 text-left">STEVAN HUMBERT LUCAS</div>
-                                <div class="d-none d-sm-block col-2 text-left">33030010</div>
-                                <div class="d-none d-sm-block col-2 text-left">{{ command_line.product_code }}</div>
+                                <div class="d-sm-block col-2 text-left">STEVAN HUMBERT LUCAS</div>
+                                <div class="d-sm-block col-2 text-left">33030010</div>
+                                <div class="d-sm-block col-2 text-left">{{ command_line.product_code }}</div>
                                 <div class="col-3 text-left">{{ command_line.description }}</div>
-                                <div class="d-none d-sm-block text-center">{{ command_line.price }}</div>
-                                <div class="d-none d-sm-block col-1 text-center">{{ command_line.quantity }}</div>
+                                <div class="d-sm-block text-center">{{ command_line.price }}</div>
+                                <div class="col-1 text-center">{{ command_line.quantity }}</div>
                                 <div class="col-1 text-right">{{ command_line.price * command_line.quantity }}</div>
-
                             </div>
                         {% endfor %}
                     </div>
@@ -241,7 +239,7 @@
                                     SubTotal
                                 </div>
                                 <div class="col-3 text-right">
-                                    <span class="text-120 text-secondary-d1">{{ order.subtotal - 50 }}</span>
+                                    <span class="text-120 text-secondary-d1">{{ order.subtotal }} $</span>
                                 </div>
                             </div>
                             <div class="row my-2">
@@ -265,7 +263,7 @@
                                     TOTAL
                                 </div>
                                 <div class="col-3 text-right">
-                                    <span class="text-120 text-secondary-d1">{{ order.subtotal }} $</span>
+                                    <span class="text-120 text-secondary-d1">{{ order.subtotal + 50}} $</span>
                                 </div>
                             </div>
                         </div>
