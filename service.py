@@ -63,11 +63,12 @@ class ShippingMethodAttributes(Enum):
     customer_name = 'Shipping Name'
 
 
-DATA = read_csv(f'{os.path.abspath(os.path.join(os.getcwd(), os.pardir))}/pythonProject1/orders-1.csv', delimiter=',')
+def read_file(filepath):
+    return read_csv(f'{filepath}', delimiter=',')
 
 
-def get_data():
-    data = DATA.to_dict()
+def get_data(dataframe):
+    data = dataframe.to_dict()
     formatted = []
     for i in data[OrderAttributes.order_id.value]:
         formatted.append({
@@ -105,6 +106,5 @@ def get_formatted_orders(list_orders):
                                                                                          'price'],
                                                                                      quantity=i['command_lines'][0][
                                                                                          'quantity']))
-    print(formatted)
     return formatted
 
