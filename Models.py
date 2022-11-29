@@ -29,6 +29,7 @@ class Order(object):
     def __init__(self, order_id, subtotal, date_payment, billing, delivery, carriage=5000, command_lines=None):
         self.order_id = order_id
         self.subtotal = subtotal
+        self.carriage = carriage
         self.total = subtotal + carriage
         self.date_payment = date_payment
         self.billing = billing
