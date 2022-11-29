@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, make_response, request
+from flask import Flask, render_template, make_response, request, send_file
 from pdfkit import from_string
 
 from service import get_formatted_orders, get_data, read_file
@@ -35,6 +35,12 @@ def generate_pdf():
         with open(f'files/invoice{orders[i].order_id}.pdf', 'wb') as f:
             f.write(pdf)
     return render_template('success.html')
+
+
+@app.route('/orders/<_id>/generatePdf')
+def get_pdf(_id):
+    with open(f'files/invoice{id}.pdf', 'rb') as static_file:
+        return send_file(static_file)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
