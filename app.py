@@ -1,10 +1,9 @@
 import os
-
-from flask import Flask, render_template, make_response, request, send_file, send_from_directory
-from pdfkit import from_string
-
+import zipfile
+from flask import Flask, render_template, request, send_from_directory, jsonify
+from pdfkit import from_string, configuration
 from service import get_formatted_orders, get_data, read_file
-
+Config = configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
 app = Flask(__name__)
 DOWNLOAD_DIRECTORY = "files"
 UPLOAD_FOLDER = 'files'
@@ -28,19 +27,20 @@ def generate_pdf():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename)
     upload_file.save(file_path)
     orders = get_formatted_orders(get_data(read_file(file_path)))
-    for i in orders:
-        html = render_template(
-            "invoice.html",
-            order=orders[i])
-        pdf = from_string(html, False)
-        with open(f'files/invoice{orders[i].order_id}.pdf', 'wb') as f:
-            f.write(pdf)
-    return render_template('success.html')
+    with zipfile.ZipFile('files/invoices.zip', 'w') as myzip:
+        for i in orders:
+            html = render_template(
+                "invoice.html",
+                order=orders[i])
+            from_string(html, f'files/invoice{orders[i].order_id}.pdf', configuration=Config)
+            myzip.write(f'files/invoice{orders[i].order_id}.pdf')
+            os.remove(f'files/invoice{orders[i].order_id}.pdf')
+    return jsonify(success=True)
 
 
-@app.route('/orders/<_id>/generatePdf')
-def get_pdf(_id):
-    return send_from_directory(DOWNLOAD_DIRECTORY, f'invoice{_id}.pdf')
+@app.route('/downloadZip')
+def get_pdfs():
+    return send_from_directory(DOWNLOAD_DIRECTORY, 'invoices.zip')
 
 
 # Press the green button in the gutter to run the script.
