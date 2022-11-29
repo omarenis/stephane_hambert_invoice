@@ -40,6 +40,7 @@ class Order(object):
         subtotal = 0
         for i in self.command_lines:
             subtotal += i.price * i.quantity
+        self.subtotal = subtotal
         return subtotal
 
 
