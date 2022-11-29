@@ -10,9 +10,11 @@
             margin-top: 20px;
             color: #484b51;
         }
+
         .text-secondary-d1 {
             color: #728299 !important;
         }
+
         .page-header {
             margin: 0 0 1rem;
             padding-bottom: 1rem;
@@ -116,7 +118,8 @@
                 {{ order.billing.address1 }}<br>
                 {{ order.billing.address2 }}<br>
                 {{ order.billing.province }} {{ order.billing.city }}<br>
-                {{ order.billing.country }}
+                {{ order.billing.country }}<br>
+                <a href="tel:{{ order.billing.phone }}">{{ order.billing.phone }}</a>
             </address>
             <address class="p-2 border-1 text-right mt-2" style="border: 1px solid black;">
                 <h4>DELIVERY ADRESS</h4>
@@ -124,7 +127,8 @@
                 {{ order.delivery.address1 }}<br>
                 {{ order.delivery.address2 }}<br>
                 {{ order.delivery.province }} {{ order.delivery.city }}<br>
-                {{ order.delivery.country }}
+                {{ order.delivery.country }}<br>
+                <a href="tel:{{ order.delivery.phone }}">{{ order.delivery.phone }}</a>
             </address>
         </div>
     </div>
@@ -188,7 +192,7 @@
                                     TOTAL
                                 </div>
                                 <div class="col-3 text-right">
-                                    <span class="text-120 text-secondary-d1">{{ order.total}} $</span>
+                                    <span class="text-120 text-secondary-d1">{{ order.subtotal + order.carriage }} $</span>
                                 </div>
                             </div>
                         </div>
@@ -198,14 +202,14 @@
         </div>
     </div>
 </div>
-<footer class="d-block justify-content-center align-items-center">
-    <p>Incoterm:DAP<br>
-       Country of origin :United Kingdom <br>
-        Dispatch by air <br> </p>
-   <address>
-       STEPHANE HUMBERT LUCAS - 25 Rue de Ponthieu - 75 008 - PARIS<br>
-        Tel.: +33 (0)1 82 09 27 44 - Fax.: +33 (0)1 70 24 71 42 - TVA Intracom.: FR68750634842</address>
-   </center>
+<footer class="d-block justify-content-center align-items-center text-center">
+    <p style="font-weight: bold">Incoterm:DAP<br>
+        Country of origin :United Kingdom <br>
+        Dispatch by air <br></p>
+    <address style="font-weight: bold">
+        STEPHANE HUMBERT LUCAS - 25 Rue de Ponthieu - 75 008 - PARIS<br>
+        Tel.: <a href="tel:+33(0)182092744">+33 (0)1 82 09 27 44</a> - Fax.: +33 (0)1 70 24 71 42 - TVA Intracom.: FR68750634842
+    </address>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
