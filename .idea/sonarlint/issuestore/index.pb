@@ -20,14 +20,10 @@ B
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-:
-
-service.py,5/6/567053110c31f6448b8e3dc089dc56eb3e349204
-;
-runtime.txt,2/e/2ed4029984f4a6c70a541992efb31f76528bd80d
 8
 Procfile,b/c/bc3c68e880d1a01632bce79f69dd1387c7ba9c54
 G
 templates/template.html,4/1/41d3b4a4b71afe0c223778e57c23244caee1baec
-6
-app.py,1/3/13cce7fd076299c81b4986166f3d822791c9490e
+:
+
+dockerfile,5/5/558c49b604560afd1841f2a7b49e2f60bd1f99b3

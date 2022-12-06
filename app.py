@@ -3,7 +3,7 @@ import zipfile
 from flask import Flask, render_template, request, send_from_directory, jsonify
 from pdfkit import from_string, configuration
 from service import get_formatted_orders, get_data, read_file
-Config = configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+Config = configuration(wkhtmltopdf=' /usr/bin/wkhtmltopdf')
 app = Flask(__name__)
 DOWNLOAD_DIRECTORY = "files"
 UPLOAD_FOLDER = 'files'
@@ -45,6 +45,6 @@ def get_pdfs():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
