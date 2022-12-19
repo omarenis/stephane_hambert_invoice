@@ -3,7 +3,7 @@ import zipfile
 from flask import Flask, render_template, request, send_from_directory, jsonify
 from pdfkit import from_string, configuration
 from service import get_formatted_orders, get_data, read_file
-Config = configuration(wkhtmltopdf=' /usr/local/bin/wkhtmltopdf')
+Config = configuration(wkhtmltopdf=' /usr/bin/wkhtmltopdf')
 app = Flask(__name__)
 DOWNLOAD_DIRECTORY = "files"
 UPLOAD_FOLDER = 'files'
@@ -25,11 +25,12 @@ def index():
 @app.route('/orders/generate_all', methods=['POST'])
 def generate_pdf():
     upload_file = request.files.get('file')
-    file_path  = f'/root/stephane_hambert_invoice/files/{upload_file.filename}'
+    file_path  = f'/home/ubuntu/stephane_hambert_invoice/files/{upload_file.filename}'
     upload_file.save(file_path)
     orders = get_formatted_orders(get_data(read_file(file_path)))
     with zipfile.ZipFile('files/invoices.zip', 'w') as myzip:
         for i in orders:
+            print(orders[i].command_lines[0].hs_code)
             html = render_template(
                 "invoice.html",
                 order=orders[i])

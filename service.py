@@ -93,13 +93,14 @@ def get_data(dataframe):
 def get_formatted_orders(list_orders):
     formatted = {}
     for i in list_orders:
+        print(i['command_lines'])
         if formatted.get(i[OrderAttributes.order_id.name]) is None:
             billing = BillingOrDelivery(**i['billing'])
             delivery = BillingOrDelivery(**i['delivery'])
             formatted[i[OrderAttributes.order_id.name]] = Order(order_id=i['order_id'], subtotal=i['subtotal'],
                                                                 date_payment=i['date_payment'], carriage=i['carriage'],
                                                                 billing=billing, delivery=delivery)
-        formatted[i[OrderAttributes.order_id.name]].command_lines.append(CommandLine(hs_code='',
+        formatted[i[OrderAttributes.order_id.name]].command_lines.append(CommandLine(hs_code=i['command_lines'][0]['hs_code'],
                                                                                      description=i['command_lines'][0][
                                                                                          'description'],
                                                                                      price=i['command_lines'][0][
