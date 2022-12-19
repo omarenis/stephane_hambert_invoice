@@ -24,7 +24,7 @@ def index():
 @app.route('/orders/generate_all', methods=['POST'])
 def generate_pdf():
     upload_file = request.files.get('file')
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename)
+    file_path  = f'/root/stephane_hambert_invoice/files/{upload_file.filename}'
     upload_file.save(file_path)
     orders = get_formatted_orders(get_data(read_file(file_path)))
     with zipfile.ZipFile('files/invoices.zip', 'w') as myzip:
