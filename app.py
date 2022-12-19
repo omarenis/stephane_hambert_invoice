@@ -3,7 +3,7 @@ import zipfile
 from flask import Flask, render_template, request, send_from_directory, jsonify
 from pdfkit import from_string, configuration
 from service import get_formatted_orders, get_data, read_file
-Config = configuration(wkhtmltopdf=' /usr/bin/wkhtmltopdf')
+Config = configuration(wkhtmltopdf=' /usr/local/bin/wkhtmltopdf')
 app = Flask(__name__)
 DOWNLOAD_DIRECTORY = "files"
 UPLOAD_FOLDER = 'files'
