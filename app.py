@@ -65,8 +65,7 @@ def generate_sorted_products_zip():
     else:
         try:
             _, file_path = upload_file(PRODUCTION, request.files.get('file'))
-            print(file_path)
-            generate_resultat_trie_zip_file(read_file(file_path))
+            generate_resultat_trie_zip_file(PRODUCTION=PRODUCTION, products=read_file(file_path))
             return jsonify({'message': 'generated'}), 200
         except Exception as e:
             return jsonify({'message', str(e)}), 500

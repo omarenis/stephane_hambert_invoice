@@ -1,4 +1,5 @@
 import os
+import pprint
 import zipfile
 from enum import Enum
 
@@ -135,21 +136,30 @@ def get_formatted_orders(list_orders):
         formatted[i[OrderAttributes.order_id.name]].calculate_subtotal()
     return formatted
 
-
-def generate_resultat_trie_zip_file(filterings):
-    products = pd.read_excel('/home/ubuntu/stephane_hambert_invoice/files/Extraction-produits-20221221.xlsx')
-    zipFile = zipfile.ZipFile('/home/ubuntu/stephane_hambert_invoice/files/resultat_trie.zip', 'w')
+def initialize_filtered_data(products):
     filtered_data = dict()
     for i in products.columns:
         filtered_data[i] = []
-    print(filterings)
+    return filtered_data
+
+def generate_resultat_trie_zip_file(PRODUCTION, products):
+    files_path = f'{"/root" if PRODUCTION is True else "/home/ubuntu"}/stephane_hambert_invoice/files'
+    filterings = pd.read_excel(f'{files_path}/Trier-produit.xlsx')
+    zipFile = zipfile.ZipFile(f'{files_path}/resultat_trie.zip', 'w')
+    filtered_data = dict()
+    for i in products.columns:
+        filtered_data[i] = []
     for filtering in filterings:
         product_codes = list(filterings[filtering].values)
+        print(filtering)
         for product_code in product_codes:
-            products_items = products[products['Product Code'] == product_code]
-            filtered_data = format_data(products_items, filtered_data)
+            if product_code is not None and products[products['Product Code'] == product_code].shape[0] != 0:
+                products_items = products[products['Product Code'] == product_code]
+                filtered_data = format_data(products_items, filtered_data)
+        pprint.pprint(filtered_data)
         dataframe = pd.DataFrame(filtered_data, columns=products.columns)
-        dataframe.to_csv(f'/home/ubuntu/stephane_hambert_invoice/files/{filtering}.csv', index=False)
-        zipFile.write(f'/home/ubuntu/stephane_hambert_invoice/files/{filtering}.csv', f'{filtering}.csv')
-        os.remove(f'/home/ubuntu/stephane_hambert_invoice/files/{filtering}.csv')
+        dataframe.to_csv(f'{files_path}/{filtering}.csv', index=False)
+        zipFile.write(f'{files_path}/{filtering}.csv', f'{filtering}.csv')
+        os.remove(f'{files_path}/{filtering}.csv')
+        filtered_data = initialize_filtered_data(products=products)
     return None
