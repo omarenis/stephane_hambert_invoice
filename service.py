@@ -1,8 +1,31 @@
 import os
+import zipfile
 from enum import Enum
 
-from pandas import read_csv as read_csv
+import pandas
+import pandas as pd
+from pandas import read_csv as read_csv, read_excel as read_excel
 from Models import Order, CommandLine, BillingOrDelivery
+
+
+def format_data(items, filtered_data):
+    if items.shape[0] != 0:
+        data = items.to_dict()
+        for i in data:
+            for value in list(data[i].values()):
+                filtered_data[i].append(value)
+    return filtered_data
+
+
+def upload_file(PRODUCTION, upload_file):
+    file_path = f'{"/home/ubuntu" if PRODUCTION == False else "/root"}/stephane_hambert_invoice/files/{upload_file.filename}'
+    upload_file.save(file_path)
+    return upload_file, file_path
+
+
+def filter_products(products_dataframe, product_filter_dataframe: pandas.DataFrame):
+    for i in product_filter_dataframe.columns:
+        print()
 
 
 def get_billing_or_delivery_data(data, attributes, index):
@@ -64,8 +87,9 @@ class ShippingMethodAttributes(Enum):
 
 
 def read_file(filepath):
-    return read_csv(f'{filepath}', delimiter=',')
-
+    if filepath.endswith('.csv'):
+        return read_csv(f'{filepath}', delimiter=',')
+    return read_excel(f'{filepath}')
 
 def get_data(dataframe):
     data = dataframe.to_dict()
@@ -100,12 +124,32 @@ def get_formatted_orders(list_orders):
             formatted[i[OrderAttributes.order_id.name]] = Order(order_id=i['order_id'], subtotal=i['subtotal'],
                                                                 date_payment=i['date_payment'], carriage=i['carriage'],
                                                                 billing=billing, delivery=delivery)
-        formatted[i[OrderAttributes.order_id.name]].command_lines.append(CommandLine(hs_code=i['command_lines'][0]['hs_code'],
-                                                                                     description=i['command_lines'][0][
-                                                                                         'description'],
-                                                                                     price=i['command_lines'][0][
-                                                                                         'price'],
-                                                                                     quantity=i['command_lines'][0][
-                                                                                         'quantity']))
+        formatted[i[OrderAttributes.order_id.name]].command_lines.append(
+            CommandLine(hs_code=i['command_lines'][0]['hs_code'],
+                        description=i['command_lines'][0][
+                            'description'],
+                        price=i['command_lines'][0][
+                            'price'],
+                        quantity=i['command_lines'][0][
+                            'quantity']))
         formatted[i[OrderAttributes.order_id.name]].calculate_subtotal()
     return formatted
+
+
+def generate_resultat_trie_zip_file(filterings):
+    products = pd.read_excel('/home/ubuntu/stephane_hambert_invoice/files/Extraction-produits-20221221.xlsx')
+    zipFile = zipfile.ZipFile('/home/ubuntu/stephane_hambert_invoice/files/resultat_trie.zip', 'w')
+    filtered_data = dict()
+    for i in products.columns:
+        filtered_data[i] = []
+    print(filterings)
+    for filtering in filterings:
+        product_codes = list(filterings[filtering].values)
+        for product_code in product_codes:
+            products_items = products[products['Product Code'] == product_code]
+            filtered_data = format_data(products_items, filtered_data)
+        dataframe = pd.DataFrame(filtered_data, columns=products.columns)
+        dataframe.to_csv(f'/home/ubuntu/stephane_hambert_invoice/files/{filtering}.csv', index=False)
+        zipFile.write(f'/home/ubuntu/stephane_hambert_invoice/files/{filtering}.csv', f'{filtering}.csv')
+        os.remove(f'/home/ubuntu/stephane_hambert_invoice/files/{filtering}.csv')
+    return None

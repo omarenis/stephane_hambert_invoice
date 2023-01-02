@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% block form %}
+        <div class="container mt-5 bg-dark">
+            <h1 class="h1 text-center text-white">generate invoices</h1>
+            <form class="container input-group mb-3" action="/orders/generate_all" enctype="multipart/form-data"
+                  method="post" id="form">
+                <label class="input-group-text" for="inputGroupFile01">Upload csv</label>
+                <input type="file" class="form-control" id="inputGroupFile01" name="file">
+                <button type="submit" class="bnt btn-success">generate pdf</button>
+            </form>
+            <div class="container" id="linkContainer">
+                <a class="link" id="link">download all the invoices</a>
+            </div>
+        </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+    <script type="text/javascript">
+      document.getElementById('linkContainer').style = "display:none";
+      document.getElementById('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        document.getElementById('linkContainer').style = "display:block";
+        document.getElementById('linkContainer').innerText = 'wait until invoices are all extracted';
+        const formData = new FormData();
+        const fileField = document.getElementById('inputGroupFile01');
+        formData.append('file', fileField.files[0]);
+        fetch('{{ url_for('invoices') }}', {
+          method: 'POST',
+          body: formData
+        }).then((response) => response.json()).then(() => {
+          document.getElementById('linkContainer').innerHTML = '<a class="btn btn-success" type="button" href="{{ url_for('get_pdfs', name='invoices') }}">download file</a>'
+        })
+      });
+    </script>
+{% endblock %}

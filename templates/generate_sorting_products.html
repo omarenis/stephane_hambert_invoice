@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block form %}
+    <div class="container bg-dark mt-5">
+        <h1 class="h1 text-center text-white">sort the products</h1>
+        <form class="container input-group mb-3" action="{{ url_for('generate_sorted_products_zip') }}"
+              enctype="multipart/form-data"
+              method="post" id="formSortProducts">
+            <label class="input-group-text" for="uploadExcelFileForSorting">Upload excel filtering file</label>
+            <input type="file" class="form-control" id="uploadExcelFileForSorting" name="file">
+            <button type="submit" class="bnt btn-success">generate sorted products zip file</button>
+        </form>
+        <div class="container" id="linkContainerProductsZip">
+            <a class="link" id="linkProductsZip">download the zip file</a>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+      document.getElementById('linkContainerProductsZip').style = "display: none";
+      document.getElementById('formSortProducts').addEventListener('submit', function (event) {
+        event.preventDefault();
+        document.getElementById('linkContainerProductsZip').style = "display: block";
+        document.getElementById('linkContainerProductsZip').innerText = 'wait until csv is generated';
+        const formData = new FormData();
+        const fileField = document.getElementById('uploadExcelFileForSorting');
+        formData.append('file', fileField.files[0]);
+        fetch('{{ url_for('generate_sorted_products_zip') }}', {
+          method: 'POST',
+          body: formData
+        }).then((response) => response.json()).then(() => {
+          document.getElementById('linkContainerProductsZip').innerHTML = '<a class="btn btn-success" type="button" href="{{ url_for('get_pdfs', name='resultat_trie') }}">download file</a>'
+        })
+      });
+    </script>
+{% endblock %}

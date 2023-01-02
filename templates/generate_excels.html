@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% block form %}
+    <div class="container mt-5 bg-dark">
+        <h1 class="h1 text-center text-white">generate excel files</h1>
+        <form class="container input-group mb-3" action="/excel/generate_all" enctype="multipart/form-data"
+              method="post" id="formExcel">
+            <label class="input-group-text" for="uploadExcel">Upload excel file</label>
+            <input type="file" class="form-control" id="uploadExcel" name="file">
+            <button type="submit" class="bnt btn-success">generate csv file</button>
+        </form>
+        <div class="container" id="linkContainerExcel">
+            <a class="link" id="linkExcel">download the csv file</a>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+      document.getElementById('linkContainerExcel').style = "display:none";
+      document.getElementById('formExcel').addEventListener('submit', function (event) {
+        event.preventDefault();
+        document.getElementById('linkContainerExcel').style = "display:block";
+        document.getElementById('linkContainerExcel').innerText = 'wait until csv is generated';
+        const formData = new FormData();
+        const fileField = document.getElementById('uploadExcel');
+        formData.append('file', fileField.files[0]);
+        fetch('{{ url_for('generate_excel_file') }}', {
+          method: 'POST',
+          body: formData
+        }).then((response) => response.json()).then(() => {
+          document.getElementById('linkContainerExcel').innerHTML = '<a class="btn btn-success" type="button" href="{{ url_for('get_excels') }}">download file</a>'
+        })
+      });
+    </script>
+{% endblock %}
