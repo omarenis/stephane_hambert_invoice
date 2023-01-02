@@ -29,7 +29,5 @@ P
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 D
 templates/index.html,f/6/f69b8ce2e31684ae06f1b3e84821e07e3dfddb2f
-F
-templates/invoice.html,5/c/5c112da0e3230383701da7b68442e1f957ed26f7
 N
 templates/generate_excels.html,d/f/dfce22642a4e242f8fba03a34b89ff5bca50b85d

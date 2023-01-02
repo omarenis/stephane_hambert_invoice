@@ -92,6 +92,7 @@ def read_file(filepath):
         return read_csv(f'{filepath}', delimiter=',')
     return read_excel(f'{filepath}')
 
+
 def get_data(dataframe):
     data = dataframe.to_dict()
     formatted = []
@@ -136,11 +137,13 @@ def get_formatted_orders(list_orders):
         formatted[i[OrderAttributes.order_id.name]].calculate_subtotal()
     return formatted
 
+
 def initialize_filtered_data(products):
     filtered_data = dict()
     for i in products.columns:
         filtered_data[i] = []
     return filtered_data
+
 
 def generate_resultat_trie_zip_file(PRODUCTION, products):
     files_path = f'{"/root" if PRODUCTION is True else "/home/ubuntu"}/stephane_hambert_invoice/files'
