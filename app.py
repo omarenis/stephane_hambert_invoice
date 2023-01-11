@@ -22,6 +22,10 @@ def index():
 
 @app.route('/invoices', methods=['GET', 'POST'])
 def invoices():
+    """
+    this api will generate the invoices based on the uploaded orders, after organizing the data into the appropriate format we parce each command into
+    the invoice template then we convert the template into pdf file using the pdfkit package
+    """
     if request.method == 'GET':
         return render_template('generate_invoices.html')
     else:
@@ -60,6 +64,9 @@ def get_pdfs(name):
 
 @app.route('/excel/generate_sorting_invoices_zip', methods=['GET', 'POST'])
 def generate_sorted_products_zip():
+    """
+    
+    """
     if request.method == 'GET':
         return render_template('generate_sorting_products.html')
     else:
@@ -73,6 +80,7 @@ def generate_sorted_products_zip():
 
 @app.route('/downloadExcel')
 def get_excels():
+    """ this function will make the csv file downloadable """
     return send_from_directory(DOWNLOAD_DIRECTORY, 'output.csv')
 
 
