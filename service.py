@@ -9,7 +9,13 @@ from pandas import read_csv as read_csv, read_excel as read_excel
 from Models import Order, CommandLine, BillingOrDelivery
 
 
+
 def format_data(items, filtered_data):
+    """
+    
+    in this function we extract the filtered data from the dataframe and format it into dictionary
+    
+    """
     if items.shape[0] != 0:
         data = items.to_dict()
         for i in data:
@@ -19,6 +25,13 @@ def format_data(items, filtered_data):
 
 
 def upload_file(PRODUCTION, upload_file):
+    
+    """
+    
+    this function will save the uploaded file inside the appropriate directory
+    
+    """
+    
     file_path = f'{"/home/ubuntu" if PRODUCTION == False else "/root"}/stephane_hambert_invoice/files/{upload_file.filename}'
     upload_file.save(file_path)
     return upload_file, file_path
@@ -88,12 +101,19 @@ class ShippingMethodAttributes(Enum):
 
 
 def read_file(filepath):
+    """
+    convert csv or excel file into dataframe
+    """
     if filepath.endswith('.csv'):
         return read_csv(f'{filepath}', delimiter=',')
     return read_excel(f'{filepath}')
 
 
 def get_data(dataframe):
+    
+    """
+    format the dataframe to the list of orders based on the dataframe, if the commandlines has the same code e just ignore the previos ones
+    """
     data = dataframe.to_dict()
     formatted = []
     for i in data[OrderAttributes.order_id.value]:
@@ -117,6 +137,10 @@ def get_data(dataframe):
 
 
 def get_formatted_orders(list_orders):
+    """
+    after getting the commandlines we create the commands based on that logic, if the command lines have the same command id we just merge it to the same
+    array
+    """
     formatted = {}
     for i in list_orders:
         print(i['command_lines'])
@@ -139,6 +163,7 @@ def get_formatted_orders(list_orders):
 
 
 def initialize_filtered_data(products):
+    """ this function is o inittialize the products list"""
     filtered_data = dict()
     for i in products.columns:
         filtered_data[i] = []
