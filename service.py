@@ -2,13 +2,14 @@ import os
 import pprint
 import zipfile
 from enum import Enum
+from os.path import dirname, abspath
 
 import pandas
 import pandas as pd
 from pandas import read_csv as read_csv, read_excel as read_excel
 from Models import Order, CommandLine, BillingOrDelivery
 
-
+ROOT = dirname(abspath(__file__))
 def format_data(items, filtered_data):
     if items.shape[0] != 0:
         data = items.to_dict()
@@ -18,15 +19,10 @@ def format_data(items, filtered_data):
     return filtered_data
 
 
-def upload_file(PRODUCTION, upload_file):
-    file_path = f'{"/home/ubuntu" if PRODUCTION == False else "/root"}/stephane_hambert_invoice/files/{upload_file.filename}'
+def upload_file(upload_file):
+    file_path = f'{ROOT}/files/{upload_file.filename}'
     upload_file.save(file_path)
     return upload_file, file_path
-
-
-def filter_products(products_dataframe, product_filter_dataframe: pandas.DataFrame):
-    for i in product_filter_dataframe.columns:
-        print()
 
 
 def get_billing_or_delivery_data(data, attributes, index):
@@ -135,6 +131,9 @@ def get_formatted_orders(list_orders):
                         quantity=i['command_lines'][0][
                             'quantity']))
         formatted[i[OrderAttributes.order_id.name]].calculate_subtotal()
+        if formatted[i[OrderAttributes.order_id.name]].subtotal < 250:
+            formatted[i[OrderAttributes.order_id.name]].total = formatted[i[OrderAttributes.order_id.name]].subtotal
+            formatted[i[OrderAttributes.order_id.name]].carriage = 0
     return formatted
 
 
@@ -145,10 +144,10 @@ def initialize_filtered_data(products):
     return filtered_data
 
 
-def generate_resultat_trie_zip_file(PRODUCTION, products):
-    files_path = f'{"/root" if PRODUCTION is True else "/home/ubuntu"}/stephane_hambert_invoice/files'
+def generate_result_trie_zip_file(products):
+    files_path = f'{ROOT}/files'
     filterings = pd.read_excel(f'{files_path}/Trier-produit.xlsx')
-    zipFile = zipfile.ZipFile(f'{files_path}/resultat_trie.zip', 'w')
+    zip_file = zipfile.ZipFile(f'{files_path}/resultat_trie.zip', 'w')
     filtered_data = dict()
     for i in products.columns:
         filtered_data[i] = []
@@ -162,7 +161,7 @@ def generate_resultat_trie_zip_file(PRODUCTION, products):
         pprint.pprint(filtered_data)
         dataframe = pd.DataFrame(filtered_data, columns=products.columns)
         dataframe.to_csv(f'{files_path}/{filtering}.csv', index=False)
-        zipFile.write(f'{files_path}/{filtering}.csv', f'{filtering}.csv')
+        zip_file.write(f'{files_path}/{filtering}.csv', f'{filtering}.csv')
         os.remove(f'{files_path}/{filtering}.csv')
         filtered_data = initialize_filtered_data(products=products)
     return None
