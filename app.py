@@ -6,7 +6,7 @@ from pdfkit import from_string, configuration
 from geberate_csv import generate_csv_file
 from service import get_formatted_orders, get_data, read_file, upload_file, generate_result_trie_zip_file
 
-PRODUCTION = False
+PRODUCTION = True
 Config = configuration(wkhtmltopdf=f'/usr/{"local/bin/" if PRODUCTION is True else "bin/"}wkhtmltopdf')
 app = Flask(__name__)
 DOWNLOAD_DIRECTORY = "files"
