@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, send_from_directory, jsonify
 from pdfkit import from_string, configuration
 
 from geberate_csv import generate_csv_file
-from service import get_formatted_orders, get_data, read_file, upload_file, generate_resultat_trie_zip_file
+from service import get_formatted_orders, get_data, read_file, upload_file, generate_result_trie_zip_file
 
 PRODUCTION = False
 Config = configuration(wkhtmltopdf=f'/usr/{"local/bin/" if PRODUCTION is True else "bin/"}wkhtmltopdf')
@@ -25,7 +25,7 @@ def invoices():
     if request.method == 'GET':
         return render_template('generate_invoices.html')
     else:
-        uploaded_file, file_path = upload_file(PRODUCTION, request.files.get('file'))
+        uploaded_file, file_path = upload_file(request.files.get('file'))
         order_items = get_formatted_orders(get_data(read_file(file_path)))
         with zipfile.ZipFile('files/invoices.zip', 'w') as myzip:
             for i in order_items:
@@ -44,7 +44,7 @@ def generate_excel_file():
     if request.method == 'GET':
         return render_template('generate_excels.html')
     else:
-        uploaded_file, file_path = upload_file(PRODUCTION, request.files.get('file'))
+        uploaded_file, file_path = upload_file(request.files.get('file'))
         try:
             generate_csv_file(uploaded_file)
             return jsonify({'message': 'generated'}), 200
@@ -64,8 +64,8 @@ def generate_sorted_products_zip():
         return render_template('generate_sorting_products.html')
     else:
         try:
-            _, file_path = upload_file(PRODUCTION, request.files.get('file'))
-            generate_resultat_trie_zip_file(PRODUCTION=PRODUCTION, products=read_file(file_path))
+            _, file_path = upload_file(request.files.get('file'))
+            generate_result_trie_zip_file(products=read_file(file_path))
             return jsonify({'message': 'generated'}), 200
         except Exception as e:
             return jsonify({'message', str(e)}), 500
@@ -77,4 +77,4 @@ def get_excels():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=not PRODUCTION, host='0.0.0.0', port=5000)

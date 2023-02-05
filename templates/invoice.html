@@ -128,23 +128,9 @@
             height: auto;
         }
 
-        [type="search"] {
-            outline-offset: -2px;
-            -webkit-appearance: none;
-        }
-
-        [type="search"]::-webkit-search-cancel-button,
-        [type="search"]::-webkit-search-decoration {
-            -webkit-appearance: none;
-        }
-
         ::-webkit-file-upload-button {
             font: inherit;
             -webkit-appearance: button;
-        }
-
-        [hidden] {
-            display: none !important;
         }
 
         .container {
@@ -171,7 +157,6 @@
             border-top: 2px solid #dee2e6;
         }
 
-
         .table-bordered {
             border: 1px solid #dee2e6;
         }
@@ -196,14 +181,6 @@
             background-color: #dae0e5 !important;
         }
 
-        .d-block {
-            display: block !important;
-        }
-
-        .w-50 {
-            width: 50% !important;
-        }
-
         .p-2 {
             padding: 0.5rem !important;
         }
@@ -215,12 +192,6 @@
         .text-right {
             text-align: right !important;
         }
-
-        .text-center {
-            text-align: center !important;
-        }
-
-
         /*# sourceMappingURL=bootstrap.css.map */
 
         .table th,
@@ -265,74 +236,63 @@
             font-weight: 300;
         }
 
-        .page-header .page-tools {
-            align-self: flex-end;
-        }
-
         .text-120 {
             font-size: 120% !important;
         }
     </style>
 </head>
 <body>
-<div class="page-content container">
-    <div style="display: flex; justify-content: space-between">
-        <div class="d-block w-50">
-            <div class="page-header text-blue-d2">
-                <h1 class="page-title text-secondary-d1 text-center">
+<div class="page-content" style="width: 100%">
+    <table style="width: 100%">
+        <tr style="width: 100%; align-items: start; display: flex">
+            <td style="display: block; width: 50%">
+                <img src="data:image/png;base64,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"/>
+                <address style="font-size: 16px; border: 1px solid black; text-align: left; width: fit-content; padding-left: 2%">
+                    <strong>FROM:<br> </strong>
                     STEPHANE HUMBERT LUCAS<br>
-                    <small class="d-block">Paris</small>
-                </h1>
-                <div class="page-tools">
-                    <div class="action-buttons">
-                    </div>
-                </div>
-            </div>
-            <address class="border-1 text-left">
-                <strong>FROM:<br> </strong>
-                STEPHANE HUMBERT LUCAS<br>
-                25 rue de Ponthieu<br>
-                75008 Paris, FRANCE<br>
-                SARL au capital de 30 000€<br>
-                VAT NUMBER: FR68750634842<br>
-                EORI NUMBER: FR750634842000<br>
-                TEL: <a href="tel:+33673971395">+3 36 73 97 13 95</a><br>
-                Warehouse : Essenses Srl Via Buenos Aires, 51 14053 Canelli (AT) Italy<br>
-            </address>
-        </div>
-        <div class="d-block w-50">
-            <table clsss="mb-2 mt-2 table w-25 table-bordered border-primary">
-                <tbody class="table-bordered">
-                <tr>
-                    <td class="p-2 bg-light">Date</td>
-                    <td class="p-2">{{ order.date_payment }}</td>
-                </tr>
-                <tr>
-                    <td class="p-2 bg-light">INVOICE ID</td>
-                    <td class="p-2">{{ order.order_id }}</td>
-                </tr>
-                </tbody>
-            </table>
-            <address class="p-2 border-1 text-right mt-2" style="border: 1px solid black;">
-                <h4>Bill/NOTIFY ADRESS</h4>
-                {{ order.billing.customer_name }}<br>
-                {{ order.billing.address1 }}<br>
-                {{ order.billing.address2 }}<br>
-                {{ order.billing.province }} {{ order.billing.city }}<br>
-                {{ order.billing.country }}<br>
-                <a href="tel:{{ order.billing.phone }}">{{ order.billing.phone }}</a>
-            </address>
-            <address class="p-2 border-1 text-right mt-2" style="border: 1px solid black;">
-                <h4>DELIVERY ADRESS</h4>
-                {{ order.delivery.customer_name }}<br>
-                {{ order.delivery.address1 }}<br>
-                {{ order.delivery.address2 }}<br>
-                {{ order.delivery.province }} {{ order.delivery.city }}<br>
-                {{ order.delivery.country }}<br>
-                <a href="tel:{{ order.delivery.phone }}">{{ order.delivery.phone }}</a>
-            </address>
-        </div>
-    </div>
+                    25 rue de Ponthieu<br>
+                    75008 Paris, FRANCE<br>
+                    SARL au capital de 30 000€<br>
+                    VAT NUMBER: FR68750634842<br>
+                    EORI NUMBER: FR750634842000<br>
+                    TEL: <a href="tel:+33673971395">+3 36 73 97 13 95</a><br>
+                    Warehouse : Essenses Srl Via Buenos Aires, 51 14053 Canelli (AT) Italy<br>
+                </address>
+            </td>
+             <td style="display: block; align-items: flex-end; text-align: right; width: 50%">
+                <table clsss="mt-2 table table-bordered border-primary" style="width: 100%; align-self: flex-end">
+                    <tbody class="table-bordered">
+                    <tr>
+                        <td class="p-2 bg-light">Date</td>
+                        <td class="p-2">{{ order.date_payment }}</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2 bg-light">INVOICE ID</td>
+                        <td class="p-2">{{ order.order_id }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <address class="p-2 text-right mt-2" style="border: 1px solid black;">
+                    <h4>Bill/NOTIFY ADRESS</h4>
+                    {{ order.billing.customer_name }}<br>
+                    {{ order.billing.address1 }}<br>
+                    {{ order.billing.address2 }}<br>
+                    {{ order.billing.province }} {{ order.billing.city }}<br>
+                    {{ order.billing.country }}<br>
+                    <a href="tel:{{ order.billing.phone }}">{{ order.billing.phone }}</a>
+                </address>
+                <address class="p-2 border-1 text-right mt-2" style="border: 1px solid black;">
+                    <h4>DELIVERY ADRESS</h4>
+                    {{ order.delivery.customer_name }}<br>
+                    {{ order.delivery.address1 }}<br>
+                    {{ order.delivery.address2 }}<br>
+                    {{ order.delivery.province }} {{ order.delivery.city }}<br>
+                    {{ order.delivery.country }}<br>
+                    <a href="tel:{{ order.delivery.phone }}">{{ order.delivery.phone }}</a>
+                </address>
+            </td>
+        </tr>
+    </table>
     <table class="table table-bordered border-primary">
         <thead class="w-100">
         <tr>
@@ -347,7 +307,7 @@
         </thead>
         <tbody class="table-bordered">
         {% for command_line in order.command_lines %}
-            <tr class="mb-2 mb-sm-0 py-25">
+            <tr class="py-25">
                 <td class="text-left" style="width: 10%">STEPHANE HUMBERT LUCAS</td>
                 <td class=" text-left" style="width: 20%">33030010</td>
                 <td class=" text-left" style="width: 30%">{{ command_line.hs_code }}</td>
@@ -366,7 +326,7 @@
         <tr>
             <th scope="row">Subtotal</th>
             <td class="text-right">
-                <span class="text-120 text-secondary-d1">{{ order.subtotal }} $</span>
+                <span class="text-120 text-secondary-d1">{{ order.subtotal }} €</span>
             </td>
         </tr>
         <tr>
@@ -374,7 +334,7 @@
                 carriage
             </th>
             <td class="text-left">
-                <span class="text-110 text-secondary-d1">{{ order.carriage }} $</span>
+                <span class="text-110 text-secondary-d1">{{ order.carriage }} €</span>
             </td>
         </tr>
         <tr>
@@ -382,17 +342,17 @@
                 TOTAL
             </th>
             <td class="text-left">
-                <span class="text-110 text-secondary-d1">{{ order.total }} $</span>
+                <span class="text-110 text-secondary-d1">{{ order.total }} €</span>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<footer style="display: block; justify-content: center; align-items: center">
-    <p style="font-weight: bold">Incoterm:DAP<br>
+<footer style="display: block; justify-content: center; align-items: center; align-content: center; border: 1px solid gray">
+    <p style="font-weight: bold; text-align: center; width: auto">Incoterm:DAP<br>
         Country of origin :United Kingdom <br>
         Dispatch by air <br></p>
-    <address style="font-weight: bold">
+    <address style="font-weight: bold; text-align: center; width: auto">
         STEPHANE HUMBERT LUCAS - 25 Rue de Ponthieu - 75 008 - PARIS<br>
         Tel.: <a href="tel:+33(0)182092744">+33 (0)1 82 09 27 44</a> - Fax.: +33 (0)1 70 24 71 42 - TVA Intracom.:
         FR68750634842
