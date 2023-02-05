@@ -2,15 +2,13 @@ import os
 import pprint
 import zipfile
 from enum import Enum
-from os.path import dirname
 
 import pandas
 import pandas as pd
 from pandas import read_csv as read_csv, read_excel as read_excel
 from Models import Order, CommandLine, BillingOrDelivery
 
-MIN_TRANSPORT = 250
-ROOT = dirname(os.path.abspath(__file__))
+
 def format_data(items, filtered_data):
     if items.shape[0] != 0:
         data = items.to_dict()
@@ -20,10 +18,16 @@ def format_data(items, filtered_data):
     return filtered_data
 
 
-def upload_file(upload_file):
-    file_path = f'{ROOT}/files/{upload_file.filename}'
+def upload_file(PRODUCTION, upload_file):
+    file_path = f'{"/home/ubuntu" if PRODUCTION == False else "/root"}/stephane_hambert_invoice/files/{upload_file.filename}'
     upload_file.save(file_path)
     return upload_file, file_path
+
+
+def filter_products(products_dataframe, product_filter_dataframe: pandas.DataFrame):
+    for i in product_filter_dataframe.columns:
+        print()
+
 
 def get_billing_or_delivery_data(data, attributes, index):
     return {
@@ -131,9 +135,6 @@ def get_formatted_orders(list_orders):
                         quantity=i['command_lines'][0][
                             'quantity']))
         formatted[i[OrderAttributes.order_id.name]].calculate_subtotal()
-        if formatted[i[OrderAttributes.order_id.name]].subtotal < MIN_TRANSPORT:
-            formatted[i[OrderAttributes.order_id.name]].total = formatted[i[OrderAttributes.order_id]].subtotal
-            formatted[i[OrderAttributes.order_id.name]].carriage = 0
     return formatted
 
 
@@ -144,8 +145,8 @@ def initialize_filtered_data(products):
     return filtered_data
 
 
-def generate_result_trie_zip_file(products):
-    files_path = f'{ROOT}/files'
+def generate_resultat_trie_zip_file(PRODUCTION, products):
+    files_path = f'{"/root" if PRODUCTION is True else "/home/ubuntu"}/stephane_hambert_invoice/files'
     filterings = pd.read_excel(f'{files_path}/Trier-produit.xlsx')
     zipFile = zipfile.ZipFile(f'{files_path}/resultat_trie.zip', 'w')
     filtered_data = dict()
